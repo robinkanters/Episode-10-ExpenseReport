@@ -1,11 +1,4 @@
-package expenseReport;/*
- * Created by IntelliJ IDEA.
- * User: Michael Feathers
- * Date: Jul 29, 2002
- * Time: 1:31:51 PM
- * To change template for new class use 
- * Code Style | Class Templates options (Tools | IDE Options).
- */
+package expenseReport;
 
 public class MockReportPrinter implements ReportPrinter {
 
