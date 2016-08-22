@@ -9,18 +9,18 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class ExpenseReportTest {
-  private ExpenseReport report = new ExpenseReport();
-  private MockReportPrinter printer = new MockReportPrinter();
+  private ExpenseReport report;
+  private ReportPrinterSpy printer;
 
   @Before
   public void setUp() {
-    report = new ExpenseReport();
-    printer = new MockReportPrinter();
+    printer = new ReportPrinterSpy();
+    report = new ExpenseReport(printer);
   }
 
   @Test
   public void printEmpty() {
-    report.printReport(printer);
+    report.printReport();
 
     assertEquals(
       "Expenses 9/12/2002\n" +
@@ -33,7 +33,7 @@ public class ExpenseReportTest {
   @Test
   public void printOneDinner() {
     report.addExpense(new DinnerExpense(1678));
-    report.printReport(printer);
+    report.printReport();
 
     assertEquals(
       "Expenses 9/12/2002\n" +
@@ -48,7 +48,7 @@ public class ExpenseReportTest {
   public void twoMeals() throws Exception {
     report.addExpense(new DinnerExpense(1000));
     report.addExpense(new BreakfastExpense(500));
-    report.printReport(printer);
+    report.printReport();
 
     assertEquals(
       "Expenses 9/12/2002\n" +
@@ -66,7 +66,7 @@ public class ExpenseReportTest {
     report.addExpense(new DinnerExpense(1000));
     report.addExpense(new BreakfastExpense(500));
     report.addExpense(new CarRentalExpense(50000));
-    report.printReport(printer);
+    report.printReport();
 
     assertEquals(
       "Expenses 9/12/2002\n" +
@@ -85,7 +85,7 @@ public class ExpenseReportTest {
     report.addExpense(new BreakfastExpense(1001));
     report.addExpense(new DinnerExpense(5000));
     report.addExpense(new DinnerExpense(5001));
-    report.printReport(printer);
+    report.printReport();
 
     assertEquals(
       "Expenses 9/12/2002\n" +
@@ -98,5 +98,4 @@ public class ExpenseReportTest {
         "Total $120.02",
       printer.getText());
   }
-
 }

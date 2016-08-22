@@ -6,49 +6,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseReport {
-    private List<Expense> expenses = new ArrayList<Expense>();
+    private ReportPrinter printer;
+    private List<Expense> expenses = new ArrayList<>();
     private int total = 0;
     private int mealExpenses = 0;
+
+    public ExpenseReport(ReportPrinter printer) {
+        this.printer = printer;
+    }
 
     public void addExpense(Expense expense) {
         expenses.add(expense);
     }
 
-    public void printReport(ReportPrinter printer) {
-        printHeader(printer);
-        printExpenses(printer);
-        printTotals(printer);
+    public void printReport() {
+        printHeader();
+        printExpenses();
+        printTotals();
     }
 
-    private void printHeader(ReportPrinter printer) {
+    private void printHeader() {
         printer.print("Expenses " + getDate() + "\n");
     }
 
-    private void printExpenses(ReportPrinter printer) {
+    private void printExpenses() {
         for (Expense expense : expenses) {
-            printExpense(printer, expense);
+            printExpense(expense);
         }
     }
 
-    private void printExpense(ReportPrinter printer, Expense expense) {
+    private void printExpense(Expense expense) {
         boolean overage = expense.isOverage();
         String name = getExpenseName(expense);
-        mealExpenses += expense.isMealExpense() ? expense.amount : 0;
+        printExpenseLine(name, expense, overage);
 
-        printExpenseLine(printer, name, expense, overage);
         total += expense.amount;
+        mealExpenses += expense.isMealExpense() ? expense.amount : 0;
     }
 
     private String getExpenseName(Expense expense) {
         return new ExpenseNamer().getName(expense);
     }
 
-    private void printTotals(ReportPrinter printer) {
+    private void printTotals() {
         printer.print(String.format("\nMeal expenses $%.02f", mealExpenses / 100.0));
         printer.print(String.format("\nTotal $%.02f", total / 100.0));
     }
 
-    private void printExpenseLine(ReportPrinter printer, String name, Expense expense, boolean isOverage) {
+    private void printExpenseLine(String name, Expense expense, boolean isOverage) {
         String overageIndicator = isOverage ? "X" : " ";
         printer.print(String.format("%s\t%s\t$%.02f\n", overageIndicator, name, convertPenniesToDollars(expense)));
     }
