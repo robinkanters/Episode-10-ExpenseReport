@@ -1,7 +1,6 @@
 package expenseReport;
 
-public class MockReportPrinter implements ReportPrinter {
-
+public class ReportPrinterSpy implements ReportPrinter {
     private String printedText = "";
 
     public void print(String text) {
@@ -11,5 +10,4 @@ public class MockReportPrinter implements ReportPrinter {
     public String getText() {
         return printedText;
     }
-
 }
